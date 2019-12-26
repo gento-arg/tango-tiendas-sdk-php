@@ -4,6 +4,9 @@ namespace TangoTiendas\Model;
 
 use TangoTiendas\Exceptions\ModelException;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyFields)
+ */
 class Shipping extends AbstractModel
 {
     /**
@@ -33,7 +36,7 @@ class Shipping extends AbstractModel
         }
 
         if (strlen((string) $ShippingID) > 50) {
-            throw new ModelException('ShippingID length must be equals or lower than 50'); // @codeCoverageIgnore
+            throw new ModelException('ShippingID length must be equals or lower than 50');
         }
 
         $this->ShippingID = $ShippingID;
@@ -319,7 +322,7 @@ class Shipping extends AbstractModel
      * @var string
      */
     protected $DeliversMonday;
-    
+
     /**
      * Getter for DeliversMonday
      * @return string
@@ -329,7 +332,7 @@ class Shipping extends AbstractModel
     {
         return $this->DeliversMonday;
     }
-    
+
     /**
      * Setter for DeliversMonday
      * @param string DeliversMonday
@@ -341,12 +344,12 @@ class Shipping extends AbstractModel
         $this->DeliversMonday = $DeliversMonday;
         return $this;
     }
-    
+
     /**
      * @var string
      */
     protected $DeliversTuesday;
-    
+
     /**
      * Getter for DeliversTuesday
      * @return string
@@ -356,7 +359,7 @@ class Shipping extends AbstractModel
     {
         return $this->DeliversTuesday;
     }
-    
+
     /**
      * Setter for DeliversTuesday
      * @param string DeliversTuesday
@@ -368,12 +371,12 @@ class Shipping extends AbstractModel
         $this->DeliversTuesday = $DeliversTuesday;
         return $this;
     }
-    
+
     /**
      * @var string
      */
     protected $DeliversWednesday;
-    
+
     /**
      * Getter for DeliversWednesday
      * @return string
@@ -383,7 +386,7 @@ class Shipping extends AbstractModel
     {
         return $this->DeliversWednesday;
     }
-    
+
     /**
      * Setter for DeliversWednesday
      * @param string DeliversWednesday
@@ -395,12 +398,12 @@ class Shipping extends AbstractModel
         $this->DeliversWednesday = $DeliversWednesday;
         return $this;
     }
-    
+
     /**
      * @var string
      */
     protected $DeliversThursday;
-    
+
     /**
      * Getter for DeliversThursday
      * @return string
@@ -410,7 +413,7 @@ class Shipping extends AbstractModel
     {
         return $this->DeliversThursday;
     }
-    
+
     /**
      * Setter for DeliversThursday
      * @param string DeliversThursday
@@ -422,12 +425,12 @@ class Shipping extends AbstractModel
         $this->DeliversThursday = $DeliversThursday;
         return $this;
     }
-    
+
     /**
      * @var string
      */
     protected $DeliversFriday;
-    
+
     /**
      * Getter for DeliversFriday
      * @return string
@@ -437,7 +440,7 @@ class Shipping extends AbstractModel
     {
         return $this->DeliversFriday;
     }
-    
+
     /**
      * Setter for DeliversFriday
      * @param string DeliversFriday
@@ -449,12 +452,12 @@ class Shipping extends AbstractModel
         $this->DeliversFriday = $DeliversFriday;
         return $this;
     }
-    
+
     /**
      * @var string
      */
     protected $DeliversSaturday;
-    
+
     /**
      * Getter for DeliversSaturday
      * @return string
@@ -464,7 +467,7 @@ class Shipping extends AbstractModel
     {
         return $this->DeliversSaturday;
     }
-    
+
     /**
      * Setter for DeliversSaturday
      * @param string DeliversSaturday
@@ -476,12 +479,12 @@ class Shipping extends AbstractModel
         $this->DeliversSaturday = $DeliversSaturday;
         return $this;
     }
-    
+
     /**
      * @var string
      */
     protected $DeliversSunday;
-    
+
     /**
      * Getter for DeliversSunday
      * @return string
@@ -491,7 +494,7 @@ class Shipping extends AbstractModel
     {
         return $this->DeliversSunday;
     }
-    
+
     /**
      * Setter for DeliversSunday
      * @param string DeliversSunday
@@ -503,12 +506,12 @@ class Shipping extends AbstractModel
         $this->DeliversSunday = $DeliversSunday;
         return $this;
     }
-    
+
     /**
      * @var string
      */
     protected $DeliveryHours;
-    
+
     /**
      * Getter for DeliveryHours
      * @return string
@@ -518,7 +521,7 @@ class Shipping extends AbstractModel
     {
         return $this->DeliveryHours;
     }
-    
+
     /**
      * Setter for DeliveryHours
      * @param string DeliveryHours
@@ -530,5 +533,4 @@ class Shipping extends AbstractModel
         $this->DeliveryHours = $DeliveryHours;
         return $this;
     }
-    
 }

@@ -21,6 +21,14 @@ class ShippingTest extends \PHPUnit\Framework\TestCase
         $item->setShippingID(0);
     }
 
+    public function testShippingIdInvalidMax()
+    {
+        $item = new Shipping();
+        $this->expectException(ModelException::class);
+
+        $item->setShippingID(str_repeat('9', 51));
+    }
+
     public function testShippingCost()
     {
         $item = new Shipping();

@@ -2,11 +2,11 @@
 
 namespace TangoTiendas;
 
+use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
-use TangoTiendas\Exceptions\ClientException;
-use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\RequestOptions;
+use TangoTiendas\Exceptions\ClientException;
 
 /**
  * @codeCoverageIgnore
@@ -22,7 +22,7 @@ abstract class Client
      */
     protected $clientConfig = [
         'timeout' => 30,
-        'base_uri' => ''
+        'base_uri' => '',
     ];
 
     /**
@@ -52,10 +52,13 @@ abstract class Client
      */
     protected $responseDataType = RequestOptions::JSON;
 
-    public function __construct($accessToken = null)
+    public function __construct(
+        $accessToken = null,
+        $guzzleClient = null
+    )
     {
-        $this->client = new GuzzleClient($this->clientConfig);
-        if ($accessToken !== null) {
+        $this->client = $guzzleClient ?? new GuzzleClient($this->clientConfig);
+        if (null !== $accessToken) {
             $this->addAccessToken($accessToken);
         }
     }
