@@ -8,6 +8,9 @@ use TangoTiendas\Exceptions\ClientException;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\RequestOptions;
 
+/**
+ * @codeCoverageIgnore
+ */
 abstract class Client
 {
     use Traits\Header;
