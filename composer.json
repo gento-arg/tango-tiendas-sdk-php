@@ -1,0 +1,18 @@
+{
+    "name": "manuelcanepa/tango-tiendas-sdk-php",
+    "description": "SDK para la integracion con TangoTiendas en PHP",
+    "require": {
+        "php": ">=7.1"
+    },
+    "require-dev": {
+        "guzzlehttp/guzzle": "dev-master",
+        "phpunit/phpunit": "^8.5",
+        "phpmd/phpmd": "^2.8",
+        "squizlabs/php_codesniffer": "^3.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "TangoTiendas\\": "src"
+        }
+    }
+}
