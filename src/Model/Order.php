@@ -111,7 +111,7 @@ class Order extends AbstractModel
      * Getter for Total
      * @return float
      */
-    public function getTotal($withDiscount = true)
+    public function getTotal()
     {
         /**
          * >0 ∑[
@@ -132,10 +132,14 @@ class Order extends AbstractModel
         }
 
         $total += $this->getFinancialSurcharge();
-        if ($withDiscount) {
-            $total -= $this->getTotalDiscount();
-        }
 
+        return $total;
+    }
+
+    public function getTotalWithDiscount()
+    {
+        $total = $this->getTotal();
+        $total -= $this->getTotalDiscount();
         return $total;
     }
 
@@ -161,7 +165,7 @@ class Order extends AbstractModel
      */
     public function setTotalDiscount($TotalDiscount)
     {
-        if ($TotalDiscount > $this->getTotal(false)) {
+        if ($TotalDiscount > $this->getTotal()) {
             throw new ModelException('TotalDiscount must be lower than Total amount');
         }
 

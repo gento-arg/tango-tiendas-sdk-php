@@ -4,6 +4,9 @@ namespace TangoTiendas\Model;
 
 use TangoTiendas\Exceptions\ModelException;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyFields)
+ */
 class Customer extends AbstractModel
 {
     /**

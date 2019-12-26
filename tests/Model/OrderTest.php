@@ -72,11 +72,11 @@ class OrderTest extends \PHPUnit\Framework\TestCase
         $orderItem->setUnitPrice(100);
         $dataModel->addOrderItem($orderItem);
 
-        $this->assertEquals(500, $dataModel->getTotal(true));
+        $this->assertEquals(500, $dataModel->getTotalWithDiscount());
 
         $shipping = new Shipping();
         $dataModel->setShipping($shipping);
-        $this->assertEquals(500, $dataModel->getTotal(true));
+        $this->assertEquals(500, $dataModel->getTotalWithDiscount());
     }
 
     public function testCustomerEmpty()
