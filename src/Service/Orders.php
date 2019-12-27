@@ -11,6 +11,7 @@ class Orders extends Client
 
     public function sendOrder(Order $order)
     {
-        return $this->call(self::ENDPOINT, 'post', $order);
+        $this->call(self::ENDPOINT, 'post', $order);
+        return $this->getParsedResponse();
     }
 }

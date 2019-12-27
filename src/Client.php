@@ -8,9 +8,6 @@ use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RequestOptions;
 use TangoTiendas\Exceptions\ClientException;
 
-/**
- * @codeCoverageIgnore
- */
 abstract class Client
 {
     use Traits\Header;
