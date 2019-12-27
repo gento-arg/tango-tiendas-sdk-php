@@ -108,7 +108,7 @@ abstract class Client
                 $guzzleRequestConfig[$this->requestDataType] = $data;
             }
 
-            $this->lastResponse = $this->getClient($this->config, $baseUri)
+            $this->lastResponse = $this->getClient($this->clientConfig, $baseUri)
                 ->$method($endpoint, $guzzleRequestConfig);
         } catch (RequestException $e) {
             $exception = new ClientException($e->getMessage());
