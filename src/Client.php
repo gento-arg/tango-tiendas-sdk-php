@@ -7,6 +7,7 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RequestOptions;
 use TangoTiendas\Exceptions\ClientException;
+use TangoTiendas\Model\Status;
 
 abstract class Client
 {
@@ -68,6 +69,7 @@ abstract class Client
      * @param $key
      * @param $value
      * @return $this
+     * @codeCoverageIgnore
      */
     protected function addClientConfig($key, $value)
     {
@@ -79,6 +81,7 @@ abstract class Client
     /**
      * @param $baseUri
      * @return $this
+     * @codeCoverageIgnore
      */
     protected function setBaseUri($baseUri)
     {
@@ -94,6 +97,7 @@ abstract class Client
      * @param array $headers
      * @param null $baseUri
      * @throws ClientException
+     * @codeCoverageIgnore
      */
     public function call($endpoint, $method, $data = [], $headers = [], $baseUri = null)
     {
@@ -125,6 +129,9 @@ abstract class Client
         $this->parseResponse();
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     protected function getClient($config, $baseUri = null)
     {
         if (is_null($baseUri)) {
@@ -159,12 +166,18 @@ abstract class Client
                 $this->parsedResponse = json_decode($responseBody, true);
                 break;
             default:
-                $this->parsedResponse = $responseBody;
+                $this->parsedResponse = $responseBody; // @codeCoverageIgnore
         }
     }
 
     public function getStatus()
     {
-        return $this->call(self::ENDPOINT_DUMMY, 'get');
+        $this->call(self::ENDPOINT_DUMMY, 'get');
+        $data = $this->getParsedResponse();
+
+        $notification = new Status();
+        $notification->loadData($data);
+
+        return $notification;
     }
 }

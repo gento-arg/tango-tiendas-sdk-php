@@ -107,4 +107,16 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
 
         $payment->setTransactionNumber(str_repeat('9', 41));
     }
+
+    public function testJsonSerialize()
+    {
+        $payment = new Payment();
+        $payment->setInstallments(2);
+        $payment->setInstallmentsAmount(400);
+        $this->assertEquals([
+            'Installments' => 2,
+            'InstallmentsAmount' => 400,
+            'Total' => 800,
+        ], $payment->jsonSerialize());
+    }
 }

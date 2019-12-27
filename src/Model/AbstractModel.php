@@ -8,15 +8,15 @@ abstract class AbstractModel implements \JsonSerializable
     {
         $objVars = get_object_vars($this);
         $return = [];
-        foreach ($objVars as $k => $v) {
-            if (is_iterable($v)) {
-                foreach ($v as $vi => $vv) {
-                    $this->_extractData($vv, $vi, $return[$k]);
+        foreach ($objVars as $ind => $value) {
+            if (is_iterable($value)) {
+                foreach ($value as $vi => $vv) {
+                    $this->_extractData($vv, $vi, $return[$ind]);
                 }
                 continue;
             }
 
-            $this->_extractData($v, $k, $return);
+            $this->_extractData($value, $ind, $return);
         }
 
         return $return;
@@ -38,6 +38,17 @@ abstract class AbstractModel implements \JsonSerializable
             return;
         }
 
-        $data[$ind] = (string) $value;
+        $data[$ind] = $value;
+    }
+
+    public function loadData($data)
+    {
+        array_walk($data, function ($value, $ind) {
+            $method = 'set' . $ind;
+            if (method_exists($this, $method)) {
+                call_user_func([$this, $method], $value);
+            }
+        });
+        return $this;
     }
 }

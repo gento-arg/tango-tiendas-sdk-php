@@ -3,6 +3,7 @@
 namespace TangoTiendas\Service;
 
 use TangoTiendas\Client;
+use TangoTiendas\Model\Notification;
 use TangoTiendas\Model\Order;
 
 class Orders extends Client
@@ -12,6 +13,11 @@ class Orders extends Client
     public function sendOrder(Order $order)
     {
         $this->call(self::ENDPOINT, 'post', $order);
-        return $this->getParsedResponse();
+        $data = $this->getParsedResponse();
+
+        $notification = new Notification();
+        $notification->loadData($data);
+
+        return $notification;
     }
 }
