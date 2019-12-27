@@ -55,8 +55,7 @@ abstract class Client
     public function __construct(
         $accessToken = null,
         $guzzleClient = null
-    )
-    {
+    ) {
         $this->client = $guzzleClient ?? new GuzzleClient($this->clientConfig);
         if (null !== $accessToken) {
             $this->addAccessToken($accessToken);
@@ -144,6 +143,11 @@ abstract class Client
     protected function isValidResponse()
     {
         return in_array($this->lastResponse->getStatusCode(), [200, 201]);
+    }
+
+    protected function getParsedResponse()
+    {
+        return $this->parsedResponse;
     }
 
     /**

@@ -328,4 +328,13 @@ class Payment extends AbstractModel
     {
         return $this->getInstallments() * $this->getInstallmentsAmount();
     }
+
+
+    public function jsonSerialize()
+    {
+        $data = parent::jsonSerialize();
+        return $data + [
+            'Total' => $this->getTotal(),
+        ];
+    }
 }

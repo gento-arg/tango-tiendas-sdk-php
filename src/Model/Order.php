@@ -403,4 +403,13 @@ class Order extends AbstractModel
 
         return;
     }
+
+    public function jsonSerialize()
+    {
+        $data = parent::jsonSerialize();
+        return $data + [
+            'Total' => $this->getTotal(),
+            'PaidTotal' => $this->getPaidTotal(),
+        ];
+    }
 }

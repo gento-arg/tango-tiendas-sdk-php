@@ -1,6 +1,8 @@
 # tango-tiendas-sdk-php
 SDK para la integracion con TangoTiendas en PHP
 
+[![Build Status](https://travis-ci.com/manuelcanepa/tango-tiendas-sdk-php.svg?token=QHqE7Mhq1zkJxs9Cgph7&branch=master)](https://travis-ci.com/manuelcanepa/tango-tiendas-sdk-php)
+
 # TODO
 
 ## Endpoints
