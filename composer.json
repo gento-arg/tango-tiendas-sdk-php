@@ -1,5 +1,5 @@
 {
-    "name": "manuelcanepa/tango-tiendas-sdk-php",
+    "name": "gento-arg/tango-tiendas-sdk-php",
     "description": "SDK para la integracion con TangoTiendas en PHP",
     "require": {
         "php": ">=7.2",

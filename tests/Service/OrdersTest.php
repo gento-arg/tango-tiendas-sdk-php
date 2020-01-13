@@ -44,8 +44,8 @@ class OrdersTest extends \PHPUnit\Framework\TestCase
         $customer = new Customer();
         $customer->setCustomerId(1)
             ->setDocumentType(96) // DNI
-            ->setUser('manuelcanepa@gmail.com')
-            ->setEmail('manuelcanepa@gmail.com')
+            ->setUser('username@example.com')
+            ->setEmail('username@example.com')
             ->setProvinceCode('1')
             ->setIvaCategoryCode('CF');
         $dataModel->setCustomer($customer);
