@@ -7,8 +7,9 @@ use TangoTiendas\Model\Order as DataModel;
 use TangoTiendas\Model\OrderItem;
 use TangoTiendas\Model\Payment;
 use TangoTiendas\Model\Shipping;
+use PHPUnit\Framework\TestCase;
 
-class OrderTest extends \PHPUnit\Framework\TestCase
+class OrderTest extends TestCase
 {
     public function testSetOrderID()
     {
