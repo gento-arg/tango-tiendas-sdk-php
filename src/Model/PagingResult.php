@@ -126,8 +126,9 @@ class PagingResult extends AbstractModel
     public function parseData($className)
     {
         $dataParsed = [];
-
-        array_walk($this->getData(), function ($value) use ($className, &$dataParsed) {
+        $data = $this->getData();
+        
+        array_walk($data, function ($value) use ($className, &$dataParsed) {
             $instance = new $className();
 
             if (method_exists($instance, 'loadData')) {
