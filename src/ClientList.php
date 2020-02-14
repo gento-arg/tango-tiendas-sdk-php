@@ -13,7 +13,7 @@ abstract class ClientList extends Client
     /**
      * @return Paging
      */
-    public function getList($pageSize = 500, $pageNumber = 1, $filter = null)
+    public function getList($pageSize = 500, $pageNumber = 1, $filter = null, $extra = null)
     {
         $url = sprintf('%s?pageSize=%s&pageNumber=%',
             self::ENDPOINT,
@@ -22,6 +22,10 @@ abstract class ClientList extends Client
 
         if ($filter !== null) {
             $url .= '&filter=' . $filter;
+        }
+
+        if ($extra !== null) {
+            $url .= '&' . $extra;
         }
 
         $this->call($url, 'get');

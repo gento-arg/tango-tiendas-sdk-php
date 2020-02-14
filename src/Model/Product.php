@@ -2,6 +2,8 @@
 
 namespace TangoTiendas\Model;
 
+use DateTime;
+
 /**
  * @SuppressWarnings(PHPMD.LongVariable)
  */
@@ -333,13 +335,13 @@ class Product extends AbstractModel
     }
 
     /**
-     * @var datetime|null
+     * @var DateTime|null
      */
     protected $KitValidityDateSince;
 
     /**
      * Getter for KitValidityDateSince
-     * @return datetime|null
+     * @return DateTime|null
      */
     public function getKitValidityDateSince()
     {
@@ -348,23 +350,27 @@ class Product extends AbstractModel
 
     /**
      * Setter for KitValidityDateSince
-     * @param datetime|null KitValidityDateSince
+     * @param DateTime|null KitValidityDateSince
      * @return self
      */
     public function setKitValidityDateSince($KitValidityDateSince)
     {
+        if ($KitValidityDateSince !== null) {
+            $KitValidityDateSince = new DateTime($KitValidityDateSince);
+        }
+
         $this->KitValidityDateSince = $KitValidityDateSince;
         return $this;
     }
 
     /**
-     * @var datetime|null
+     * @var DateTime|null
      */
     protected $KitValidityDateUntil;
 
     /**
      * Getter for KitValidityDateUntil
-     * @return datetime|null
+     * @return DateTime|null
      */
     public function getKitValidityDateUntil()
     {
@@ -373,11 +379,15 @@ class Product extends AbstractModel
 
     /**
      * Setter for KitValidityDateUntil
-     * @param datetime|null KitValidityDateUntil
+     * @param DateTime|null KitValidityDateUntil
      * @return self
      */
     public function setKitValidityDateUntil($KitValidityDateUntil)
     {
+        if ($KitValidityDateUntil !== null) {
+            $KitValidityDateUntil = new DateTime($KitValidityDateUntil);
+        }
+
         $this->KitValidityDateUntil = $KitValidityDateUntil;
         return $this;
     }
@@ -717,7 +727,7 @@ class Product extends AbstractModel
             $class->loadData($value);
             return $class;
         }, $composition);
-        $this->setProductComments($composition);
+        $this->setProductComposition($composition);
 
         $comments = $data['ProductComments'] ?? [];
         $comments = array_map(function ($value) {

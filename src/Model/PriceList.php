@@ -2,6 +2,8 @@
 
 namespace TangoTiendas\Model;
 
+use DateTime;
+
 class PriceList extends AbstractModel
 {
     /**
@@ -130,13 +132,13 @@ class PriceList extends AbstractModel
     }
 
     /**
-     * @var datetime|null
+     * @var DateTime|null
      */
     protected $ValidityDateSince;
 
     /**
      * Getter for ValidityDateSince
-     * @return datetime|null
+     * @return DateTime|null
      */
     public function getValidityDateSince()
     {
@@ -145,23 +147,27 @@ class PriceList extends AbstractModel
 
     /**
      * Setter for ValidityDateSince
-     * @param datetime|null ValidityDateSince
+     * @param DateTime|null ValidityDateSince
      * @return self
      */
     public function setValidityDateSince($ValidityDateSince)
     {
+        if ($ValidityDateSince !== null) {
+            $ValidityDateSince = new DateTime($ValidityDateSince);
+        }
+
         $this->ValidityDateSince = $ValidityDateSince;
         return $this;
     }
 
     /**
-     * @var datetime|null
+     * @var DateTime|null
      */
     protected $ValidityDateUntil;
 
     /**
      * Getter for ValidityDateUntil
-     * @return datetime|null
+     * @return DateTime|null
      */
     public function getValidityDateUntil()
     {
@@ -170,11 +176,15 @@ class PriceList extends AbstractModel
 
     /**
      * Setter for ValidityDateUntil
-     * @param datetime|null ValidityDateUntil
+     * @param DateTime|null ValidityDateUntil
      * @return self
      */
     public function setValidityDateUntil($ValidityDateUntil)
     {
+        if ($ValidityDateUntil !== null) {
+            $ValidityDateUntil = new DateTime($ValidityDateUntil);
+        }
+
         $this->ValidityDateUntil = $ValidityDateUntil;
         return $this;
     }
