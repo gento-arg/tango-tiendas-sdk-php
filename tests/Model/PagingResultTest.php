@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use TangoTiendas\Model\PagingResult;
-use TangoTiendas\Model\Stock as DataModel;
+use TangoTiendas\Model\Stock;
 
 class PagingResultTest extends TestCase
 {
@@ -11,18 +11,17 @@ class PagingResultTest extends TestCase
      */
     public function testStockData($data)
     {
-        $pagingResult = new PagingResult();
-        $pagingResult->loadData($data, DataModel::class);
+        $pagingResult = new PagingResult(Stock::class);
+        $pagingResult->loadData($data);
 
         $this->assertEquals(1, $pagingResult->getPageNumber());
         $this->assertEquals(500, $pagingResult->getPageSize());
         $this->assertEquals(10, count($pagingResult->getData()));
-        $this->assertTrue($pagingResult->isMoreData());
+        $this->assertTrue($pagingResult->hasMoreData());
 
-        $pagingResult->parseData(DataModel::class);
         $elements = $pagingResult->getData();
 
-        $this->assertInstanceOf(DataModel::class, $elements[0]);
+        $this->assertInstanceOf(Stock::class, $elements[0]);
     }
 
     public function stockResultDataProvider()

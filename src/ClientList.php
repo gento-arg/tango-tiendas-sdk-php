@@ -2,7 +2,7 @@
 
 namespace TangoTiendas;
 
-use TangoTiendas\Model\Paging;
+use TangoTiendas\Model\PagingResult;
 
 abstract class ClientList extends Client
 {
@@ -27,7 +27,7 @@ abstract class ClientList extends Client
         $this->call($url, 'get');
         $data = $this->getParsedResponse();
 
-        $result = new Paging($this->_dataClass);
+        $result = new PagingResult($this->_dataClass);
         $result->loadData($data);
 
         return $result;
