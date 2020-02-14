@@ -4,142 +4,123 @@ namespace TangoTiendas\Model;
 
 class PagingResult extends AbstractModel
 {
+
     /**
      * @var int
      */
-    protected $pageNumber;
+    protected $PageNumber;
 
     /**
-     * Getter for pageNumber
+     * Getter for PageNumber
      * @return int
      */
     public function getPageNumber()
     {
-        return $this->pageNumber;
+        return $this->PageNumber;
     }
 
     /**
-     * Setter for pageNumber
-     * @param int pageNumber
+     * Setter for PageNumber
+     * @param int PageNumber
      * @return self
      */
-    public function setPageNumber($pageNumber)
+    public function setPageNumber($PageNumber)
     {
-        $this->pageNumber = $pageNumber;
+        $this->PageNumber = $PageNumber;
         return $this;
     }
 
     /**
      * @var int
      */
-    protected $pageSize;
+    protected $PageSize;
 
     /**
-     * Getter for pageSize
+     * Getter for PageSize
      * @return int
      */
     public function getPageSize()
     {
-        return $this->pageSize;
+        return $this->PageSize;
     }
 
     /**
-     * Setter for pageSize
-     * @param int pageSize
+     * Setter for PageSize
+     * @param int PageSize
      * @return self
      */
-    public function setPageSize($pageSize)
+    public function setPageSize($PageSize)
     {
-        $this->pageSize = $pageSize;
+        $this->PageSize = $PageSize;
         return $this;
     }
 
     /**
      * @var bool
      */
-    protected $moreData;
+    protected $MoreData;
 
     /**
-     * Getter for moreData
+     * Getter for MoreData
      * @return bool
      */
-    public function isMoreData()
+    public function hasMoreData()
     {
-        return $this->moreData;
+        return $this->MoreData;
     }
 
     /**
-     * Setter for moreData
-     * @param bool moreData
+     * Setter for MoreData
+     * @param bool MoreData
      * @return self
      */
-    public function setMoreData($moreData)
+    public function setMoreData($MoreData)
     {
-        $this->moreData = $moreData;
+        $this->MoreData = $MoreData;
         return $this;
     }
 
     /**
-     * @var object[]
+     * @var mixed
      */
-    protected $data = [];
+    protected $Data;
 
     /**
-     * Getter for data
-     * @return object[]
+     * Getter for Data
+     * @return mixed
      */
     public function getData()
     {
-        return $this->data;
+        return $this->Data;
     }
 
     /**
-     * Setter for data
-     * @param object[] data
+     * Setter for Data
+     * @param mixed Data
      * @return self
      */
-    public function setData($data)
+    public function setData($Data)
     {
-        $this->data = $data;
+        $this->Data = $Data;
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     */
+    protected $_dataClass;
+
+    public function __construct($dataClass)
+    {
+        $this->_dataClass = $dataClass;
+    }
+
     public function loadData($data)
     {
-        $paging = $data['Paging'];
-        $data = $data['Data'] ?? [];
-
-        array_walk($paging, function ($value, $ind) {
-            $method = 'set' . $ind;
-            if (method_exists($this, $method)) {
-                call_user_func([$this, $method], $value);
-            }
-        });
-
-        $this->setData($data);
+        parent::loadData($data['Paging']);
+        $items = array_map(function ($value) {
+            $class = new $this->_dataClass();
+            $class->loadData($value);
+            return $class;
+        }, $data['Data']);
+        $this->setData($items);
         return $this;
     }
-
-    public function parseData($className)
-    {
-        $dataParsed = [];
-        $data = $this->getData();
-        
-        array_walk($data, function ($value) use ($className, &$dataParsed) {
-            $instance = new $className();
-
-            if (method_exists($instance, 'loadData')) {
-                call_user_func([$instance, 'loadData'], $value);
-            }
-            $dataParsed[] = $instance;
-        });
-
-        $this->setData($dataParsed);
-
-        return $this;
-    }
-
 }

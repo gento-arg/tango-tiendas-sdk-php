@@ -14,9 +14,9 @@ Los parametros entre llaves `{}` son obligatorios, y los encerrados entre corche
 ### V1:
 
 - [x] [Stock](https://tiendas.axoft.com/api/Aperture/Stock)
-- [ ] [Sucursales](https://tiendas.axoft.com/api/Aperture/Store)
-- [ ] [Depositos](https://tiendas.axoft.com/api/Aperture/Warehouse)
-- [ ] [Unidades de medida](https://tiendas.axoft.com/api/Aperture/Measure)
+- [x] [Sucursales](https://tiendas.axoft.com/api/Aperture/Store)
+- [x] [Depositos](https://tiendas.axoft.com/api/Aperture/Warehouse)
+- [x] [Unidades de medida](https://tiendas.axoft.com/api/Aperture/Measure)
 - [ ] [Productos](https://tiendas.axoft.com/api/Aperture/Product)
 - [ ] [Clientes](https://tiendas.axoft.com/api/Aperture/Customer)
 - [ ] [Listas de precio](https://tiendas.axoft.com/api/Aperture/PriceList)
