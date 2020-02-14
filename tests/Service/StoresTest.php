@@ -85,7 +85,7 @@ class StoresTest extends \PHPUnit\Framework\TestCase
          */
         $data = $rta->getData();
 
-        $this->assertEquals(Store::class, get_class($data[0]));
+        $this->assertInstanceOf(Store::class, $data[0]);
         $this->assertEquals(1, $data[0]->getStoreNumber());
         $this->assertEquals('CASA CENTRAL', $data[0]->getDescription());
         $this->assertEquals('', $data[0]->getStreet());
@@ -103,7 +103,7 @@ class StoresTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('(33333)3333-3333', $data[0]->getPhoneNumber1());
         $this->assertEquals('(22222)2222-2222', $data[0]->getPhoneNumber2());
 
-        $this->assertEquals(Store::class, get_class($data[1]));
+        $this->assertInstanceOf(Store::class, $data[1]);
         $this->assertEquals(2, $data[1]->getStoreNumber());
         $this->assertEquals('MAR DEL PLATA', $data[1]->getDescription());
         $this->assertEquals('', $data[1]->getStreet());
@@ -134,7 +134,7 @@ class StoresTest extends \PHPUnit\Framework\TestCase
          */
         $data = $rta->getData();
 
-        $this->assertEquals(Store::class, get_class($data[0]));
+        $this->assertInstanceOf(Store::class, $data[0]);
         $this->assertEquals(1, $data[0]->getStoreNumber());
         $this->assertEquals('CASA CENTRAL', $data[0]->getDescription());
         $this->assertEquals('', $data[0]->getStreet());
@@ -152,7 +152,7 @@ class StoresTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('(33333)3333-3333', $data[0]->getPhoneNumber1());
         $this->assertEquals('(22222)2222-2222', $data[0]->getPhoneNumber2());
 
-        $this->assertEquals(Store::class, get_class($data[1]));
+        $this->assertInstanceOf(Store::class, $data[1]);
         $this->assertEquals(2, $data[1]->getStoreNumber());
         $this->assertEquals('MAR DEL PLATA', $data[1]->getDescription());
         $this->assertEquals('', $data[1]->getStreet());
