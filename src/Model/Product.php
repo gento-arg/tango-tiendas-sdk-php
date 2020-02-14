@@ -2,6 +2,9 @@
 
 namespace TangoTiendas\Model;
 
+/**
+ * @SuppressWarnings(PHPMD.LongVariable)
+ */
 class Product extends AbstractModel
 {
     /**

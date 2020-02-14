@@ -2,6 +2,9 @@
 
 namespace TangoTiendas\Model;
 
+/**
+ * @SuppressWarnings(PHPMD.NumberOfChildren)
+ */
 abstract class AbstractModel implements \JsonSerializable
 {
     public function jsonSerialize()
