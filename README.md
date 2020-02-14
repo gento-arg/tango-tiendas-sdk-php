@@ -19,7 +19,7 @@ Los parametros entre llaves `{}` son obligatorios, y los encerrados entre corche
 - [x] [Unidades de medida](https://tiendas.axoft.com/api/Aperture/Measure)
 - [x] [Productos](https://tiendas.axoft.com/api/Aperture/Product)
 - [x] [Clientes](https://tiendas.axoft.com/api/Aperture/Customer)
-- [ ] [Listas de precio](https://tiendas.axoft.com/api/Aperture/PriceList)
+- [x] [Listas de precio](https://tiendas.axoft.com/api/Aperture/PriceList)
 - [ ] [Precios](https://tiendas.axoft.com/api/Aperture/Price)
 - [ ] [Precios por cliente](https://tiendas.axoft.com/api/Aperture/PriceByCustomer)
 - [ ] [Descuentos por cliente](https://tiendas.axoft.com/api/Aperture/DiscountByCustomer)
