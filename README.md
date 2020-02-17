@@ -22,7 +22,7 @@ Los parametros entre llaves `{}` son obligatorios, y los encerrados entre corche
 - [x] [Listas de precio](https://tiendas.axoft.com/api/Aperture/PriceList)
 - [x] [Precios](https://tiendas.axoft.com/api/Aperture/Price)
 - [x] [Precios por cliente](https://tiendas.axoft.com/api/Aperture/PriceByCustomer)
-- [ ] [Descuentos por cliente](https://tiendas.axoft.com/api/Aperture/DiscountByCustomer)
+- [x] [Descuentos por cliente](https://tiendas.axoft.com/api/Aperture/DiscountByCustomer)
 
 ### Notificaciones
 

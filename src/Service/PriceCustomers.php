@@ -11,12 +11,18 @@ class PriceCustomers extends ClientList
 
     protected $_dataClass = PriceCustomer::class;
 
-    public function getList($pageSize = 500, $pageNumber = 1, $filter = null, $extra = null)
+    /**
+     * @param int $pageSize
+     * @param int $pageNumber
+     * @param string|null $customerCode Customer code to filter
+     * @param string|null $listNumber List number to filter
+     */
+    public function getList($pageSize = 500, $pageNumber = 1, $customerCode = null, $listNumber = null)
     {
-        if ($extra !== null) {
-            return parent::getList($pageSize, $pageNumber, $filter, 'PriceListNumber=' . $extra);
+        if ($listNumber !== null) {
+            return parent::getList($pageSize, $pageNumber, $customerCode, 'PriceListNumber=' . $listNumber);
         }
 
-        return parent::getList($pageSize, $pageNumber, $filter);
+        return parent::getList($pageSize, $pageNumber, $customerCode);
     }
 }

@@ -11,12 +11,18 @@ class Prices extends ClientList
 
     protected $_dataClass = Price::class;
 
-    public function getList($pageSize = 500, $pageNumber = 1, $filter = null, $extra = null)
+    /**
+     * @param int $pageSize
+     * @param int $pageNumber
+     * @param int|null $priceList Price list number to filter
+     * @param string|null $productSku Product sku to filter
+     */
+    public function getList($pageSize = 500, $pageNumber = 1, $priceList = null, $productSku = null)
     {
-        if ($extra !== null) {
-            return parent::getList($pageSize, $pageNumber, $filter, 'SKUCode=' . $extra);
+        if ($productSku !== null) {
+            return parent::getList($pageSize, $pageNumber, $priceList, 'SKUCode=' . $productSku);
         }
 
-        return parent::getList($pageSize, $pageNumber, $filter);
+        return parent::getList($pageSize, $pageNumber, $priceList);
     }
 }
