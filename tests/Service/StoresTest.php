@@ -4,10 +4,11 @@ use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\TestCase;
 use TangoTiendas\Model\Store;
 use TangoTiendas\Service\Stores;
 
-class StoresTest extends \PHPUnit\Framework\TestCase
+class StoresTest extends TestCase
 {
     /**
      * @var Stores
