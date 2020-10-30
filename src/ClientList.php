@@ -15,8 +15,8 @@ abstract class ClientList extends Client
      */
     public function getList($pageSize = 500, $pageNumber = 1, $filter = null, $extra = null)
     {
-        $url = sprintf('%s?pageSize=%s&pageNumber=%',
-            self::ENDPOINT,
+        $url = sprintf('%s?pageSize=%s&pageNumber=%s',
+            static::ENDPOINT,
             $pageSize,
             $pageNumber);
 

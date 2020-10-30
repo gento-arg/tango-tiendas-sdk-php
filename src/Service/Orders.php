@@ -12,7 +12,7 @@ class Orders extends Client
 
     public function sendOrder(Order $order)
     {
-        $this->call(self::ENDPOINT, 'post', $order);
+        $this->call(static::ENDPOINT, 'post', $order);
         $data = $this->getParsedResponse();
 
         $notification = new Notification();

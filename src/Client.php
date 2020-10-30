@@ -20,7 +20,7 @@ abstract class Client
      */
     protected $clientConfig = [
         'timeout' => 30,
-        'base_uri' => '',
+        'base_uri' => 'https://tiendas.axoft.com/api/',
     ];
 
     /**
@@ -172,7 +172,7 @@ abstract class Client
 
     public function getStatus()
     {
-        $this->call(self::ENDPOINT_DUMMY, 'get');
+        $this->call(static::ENDPOINT_DUMMY, 'get');
         $data = $this->getParsedResponse();
 
         $notification = new Status();
