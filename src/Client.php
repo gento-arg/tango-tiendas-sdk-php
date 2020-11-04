@@ -13,7 +13,7 @@ abstract class Client
 {
     use Traits\Header;
 
-    const ENDPOINT_DUMMY = 'v2/Aperture/dummy';
+    const ENDPOINT_DUMMY = 'Aperture/dummy';
 
     /**
      * @var array
@@ -172,7 +172,7 @@ abstract class Client
 
     public function getStatus()
     {
-        $this->call(static::ENDPOINT_DUMMY, 'get');
+        $this->call(static::ENDPOINT_DUMMY, 'post');
         $data = $this->getParsedResponse();
 
         $notification = new Status();
