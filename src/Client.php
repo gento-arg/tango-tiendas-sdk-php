@@ -126,7 +126,7 @@ abstract class Client
             throw new ClientException('Response is invalid');
         }
 
-        $this->parseResponse();
+        return $this->parseResponse();
     }
 
     /**
@@ -168,6 +168,8 @@ abstract class Client
             default:
                 $this->parsedResponse = $responseBody; // @codeCoverageIgnore
         }
+
+        return $this->parsedResponse;
     }
 
     public function getStatus()
