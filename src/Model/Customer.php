@@ -157,7 +157,7 @@ class Customer extends AbstractModel
     }
 
     /**
-     * Nombre del cliente. Se utilizará para emitir la factura si mediante el 
+     * Nombre del cliente. Se utilizará para emitir la factura si mediante el
      * C.U.I.L / C.U.I.T. / D.N.I. no se encontraron datos en la A.F.I.P.
      * @var string
      */
@@ -186,7 +186,7 @@ class Customer extends AbstractModel
     }
 
     /**
-     * Apellido del cliente. Se utilizará para emitir la factura si mediante el 
+     * Apellido del cliente. Se utilizará para emitir la factura si mediante el
      * C.U.I.L / C.U.I.T. / D.N.I. no se encontraron datos en la A.F.I.P.
      * @var string
      */
@@ -603,6 +603,34 @@ class Customer extends AbstractModel
     public function setIvaCategoryCode($IvaCategoryCode)
     {
         $this->IvaCategoryCode = $IvaCategoryCode;
+        return $this;
+    }
+
+    /**
+     * Código de cliente
+     * @var string
+     */
+    protected $Code;
+
+    /**
+     * Getter for Code
+     * @return string
+     * @codeCoverageIgnore
+     */
+    public function getCode()
+    {
+        return $this->Code;
+    }
+
+    /**
+     * Setter for Code
+     * @param string Code
+     * @return self
+     * @codeCoverageIgnore
+     */
+    public function setCode($Code)
+    {
+        $this->Code = $Code;
         return $this;
     }
 }
