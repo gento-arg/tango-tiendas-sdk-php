@@ -11,6 +11,182 @@ class Order extends AbstractModel
      * @var string
      */
     protected $OrderID;
+    /**
+     * Número de la orden. Es el número con el cual podrá identificar la orden
+     * desde revisión de pedidos de Tango Tiendas
+     * @var string
+     */
+    protected $OrderNumber;
+    /**
+     * Fecha de la orden. Puede ser anterior a 7 días de la fecha actual.
+     * @var \DateTime
+     */
+    protected $Date;
+    /**
+     * Importe de descuento total de la operación. Sólo valido en pesos argentinos.
+     * @var float
+     */
+    protected $TotalDiscount;
+    /**
+     * Importe del recargo financiero. Sólo válido en pesos argentinos.
+     * @var float
+     */
+    protected $FinancialSurcharge;
+    /**
+     * Indica que la orden está cancelada
+     * @var bool
+     */
+    protected $CancelOrden;
+    /**
+     * @var Customer
+     */
+    protected $Customer;
+    /**
+     * @var OrderItem[]
+     */
+    protected $OrderItems = [];
+    /**
+     * Se puede completar ya sea que el envío sea con o sin costo para el comprador.
+     * @var Shipping
+     */
+    protected $Shipping;
+    /**
+     * @var Payment[]
+     */
+    protected $Payments;
+    /**
+     * @var CashPayment[]
+     */
+    protected $CashPayments;
+    /**
+     * Indica si el pago de la orden se acuerda con el vendedor
+     * @var bool
+     */
+    protected $AgreedWithSeller;
+
+    /**
+     * @param $CashPayment
+     *
+     * @return $this
+     */
+    public function addCashPayment($CashPayment)
+    {
+        $this->CashPayments[] = $CashPayment;
+        return $this;
+    }
+
+    /**
+     * Append for OrderItems
+     *
+     * @param OrderItem OrderItem
+     *
+     * @return self
+     */
+    public function addOrderItem($OrderItem)
+    {
+        $this->OrderItems[] = $OrderItem;
+        return $this;
+    }
+
+    /**
+     * Add Payment
+     *
+     * @param Payment Payment
+     *
+     * @return self
+     */
+    public function addPayment(Payment $Payment)
+    {
+        $this->_checkValidDate($Payment);
+
+        $this->Payments[] = $Payment;
+        return $this;
+    }
+
+    /**
+     * Getter for CashPayment
+     * @return CashPayment[]
+     */
+    public function getCashPayments()
+    {
+        return $this->CashPayments ?? [];
+    }
+
+    /**
+     * Getter for Customer
+     * @return Customer
+     */
+    public function getCustomer()
+    {
+        return $this->Customer;
+    }
+
+    /**
+     * Setter for Customer
+     *
+     * @param Customer Customer
+     *
+     * @return self
+     */
+    public function setCustomer($Customer)
+    {
+        $this->Customer = $Customer;
+        return $this;
+    }
+
+    /**
+     * Getter for Date
+     * @return \DateTime
+     * @codeCoverageIgnore
+     */
+    public function getDate()
+    {
+        return $this->Date;
+    }
+
+    /**
+     * Setter for Date
+     *
+     * @param \DateTime $Date
+     *
+     * @return self
+     * @codeCoverageIgnore
+     */
+    public function setDate($Date)
+    {
+        foreach ($this->getPayments() as $Payment) {
+            $this->_checkValidDate($Payment, $Date);
+        }
+
+        $this->Date = $Date;
+        return $this;
+    }
+
+    /**
+     * Getter for FinancialSurcharge
+     * @return float
+     */
+    public function getFinancialSurcharge()
+    {
+        return $this->FinancialSurcharge;
+    }
+
+    /**
+     * Setter for FinancialSurcharge
+     *
+     * @param float $FinancialSurcharge
+     *
+     * @return self
+     */
+    public function setFinancialSurcharge($FinancialSurcharge)
+    {
+        if ((float) $FinancialSurcharge < 0) {
+            throw new ModelException('FinancialSurcharge must be equals or greater than 0');
+        }
+
+        $this->FinancialSurcharge = $FinancialSurcharge;
+        return $this;
+    }
 
     /**
      * Getter for OrderID
@@ -23,7 +199,9 @@ class Order extends AbstractModel
 
     /**
      * Setter for OrderID
+     *
      * @param string $OrderID
+     *
      * @return self
      */
     public function setOrderID($OrderID)
@@ -41,11 +219,13 @@ class Order extends AbstractModel
     }
 
     /**
-     * Número de la orden. Es el número con el cual podrá identificar la orden 
-     * desde revisión de pedidos de Tango Tiendas
-     * @var string
+     * Getter for OrderItems
+     * @return OrderItem[]
      */
-    protected $OrderNumber;
+    public function getOrderItems()
+    {
+        return $this->OrderItems;
+    }
 
     /**
      * Getter for OrderNumber
@@ -58,7 +238,9 @@ class Order extends AbstractModel
 
     /**
      * Setter for OrderNumber
+     *
      * @param string $OrderNumber
+     *
      * @return self
      */
     public function setOrderNumber($OrderNumber)
@@ -76,34 +258,55 @@ class Order extends AbstractModel
     }
 
     /**
-     * Fecha de la orden. Puede ser anterior a 7 días de la fecha actual.
-     * @var \DateTime
+     * Getter for PaidTotal
+     * @return float
      */
-    protected $Date;
-
-    /**
-     * Getter for Date
-     * @return \DateTime
-     * @codeCoverageIgnore
-     */
-    public function getDate()
+    public function getPaidTotal()
     {
-        return $this->Date;
+        /**
+         * >=0 ∑(Payments.Installments * Payments.InstallmentsAmount)
+         *     + CashPayment.PaymentTotal
+         */
+
+        $total = 0;
+        foreach ($this->getPayments() as $item) {
+            $total += ($item->getTotal());
+        }
+        foreach ($this->getCashPayments() as $item) {
+            $total += ($item->getPaymentTotal());
+        }
+
+        return $total;
     }
 
     /**
-     * Setter for Date
-     * @param \DateTime $Date
-     * @return self
-     * @codeCoverageIgnore
+     * Getter for Payments
+     * @return Payment[]
      */
-    public function setDate($Date)
+    public function getPayments()
     {
-        foreach ($this->getPayments() as $Payment) {
-            $this->_checkValidDate($Payment, $Date);
-        }
+        return $this->Payments ?? [];
+    }
 
-        $this->Date = $Date;
+    /**
+     * Getter for Shipping
+     * @return Shipping
+     */
+    public function getShipping()
+    {
+        return $this->Shipping;
+    }
+
+    /**
+     * Setter for Shipping
+     *
+     * @param Shipping Shipping
+     *
+     * @return self
+     */
+    public function setShipping($Shipping)
+    {
+        $this->Shipping = $Shipping;
         return $this;
     }
 
@@ -116,9 +319,9 @@ class Order extends AbstractModel
         /**
          * >0 ∑[
          *      (OrderItems.Quantity x OrderItems.UnitPrice) – OrderItems.DiscountPorcentage)
-         *    ] 
-         *    + Shipping.ShippingCost 
-         *    + Principal.FinancialSurcharge 
+         *    ]
+         *    + Shipping.ShippingCost
+         *    + Principal.FinancialSurcharge
          *    – Principal.TotalDiscount
          */
 
@@ -136,19 +339,6 @@ class Order extends AbstractModel
         return $total;
     }
 
-    public function getTotalWithDiscount()
-    {
-        $total = $this->getTotal();
-        $total -= $this->getTotalDiscount();
-        return $total;
-    }
-
-    /**
-     * Importe de descuento total de la operación. Sólo valido en pesos argentinos.
-     * @var float
-     */
-    protected $TotalDiscount;
-
     /**
      * Getter for TotalDiscount
      * @return float
@@ -160,7 +350,9 @@ class Order extends AbstractModel
 
     /**
      * Setter for TotalDiscount
+     *
      * @param float $TotalDiscount
+     *
      * @return self
      */
     public function setTotalDiscount($TotalDiscount)
@@ -173,64 +365,36 @@ class Order extends AbstractModel
         return $this;
     }
 
-    /**
-     * Getter for PaidTotal
-     * @return float
-     */
-    public function getPaidTotal()
+    public function getTotalWithDiscount()
     {
-        /**
-         * >=0 ∑(Payments.Installments * Payments.InstallmentsAmount) 
-         *     + CashPayment.PaymentTotal
-         */
-
-        $total = 0;
-        foreach ($this->getPayments() as $item) {
-            $total += ($item->getTotal());
-        }
-
-        if ($this->getCashPayment() != null) {
-            $total += $this->getCashPayment()->getPaymentTotal();
-        }
-
+        $total = $this->getTotal();
+        $total -= $this->getTotalDiscount();
         return $total;
     }
 
     /**
-     * Importe del recargo financiero. Sólo válido en pesos argentinos.
-     * @var float
+     * Getter for AgreedWithSeller
+     * @return bool
+     * @codeCoverageIgnore
      */
-    protected $FinancialSurcharge;
-
-    /**
-     * Getter for FinancialSurcharge
-     * @return float
-     */
-    public function getFinancialSurcharge()
+    public function isAgreedWithSeller()
     {
-        return $this->FinancialSurcharge;
+        return $this->AgreedWithSeller;
     }
 
     /**
-     * Setter for FinancialSurcharge
-     * @param float $FinancialSurcharge
+     * Setter for AgreedWithSeller
+     *
+     * @param bool $AgreedWithSeller
+     *
      * @return self
+     * @codeCoverageIgnore
      */
-    public function setFinancialSurcharge($FinancialSurcharge)
+    public function setAgreedWithSeller($AgreedWithSeller)
     {
-        if ((float) $FinancialSurcharge < 0) {
-            throw new ModelException('FinancialSurcharge must be equals or greater than 0');
-        }
-
-        $this->FinancialSurcharge = $FinancialSurcharge;
+        $this->AgreedWithSeller = $AgreedWithSeller;
         return $this;
     }
-
-    /**
-     * Indica que la orden está cancelada
-     * @var bool
-     */
-    protected $CancelOrden;
 
     /**
      * Getter for CancelOrden
@@ -244,7 +408,9 @@ class Order extends AbstractModel
 
     /**
      * Setter for CancelOrden
+     *
      * @param bool $CancelOrden
+     *
      * @return self
      * @codeCoverageIgnore
      */
@@ -254,132 +420,13 @@ class Order extends AbstractModel
         return $this;
     }
 
-    /**
-     * @var Customer
-     */
-    protected $Customer;
-
-    /**
-     * Getter for Customer
-     * @return Customer
-     */
-    public function getCustomer()
+    public function jsonSerialize()
     {
-        return $this->Customer;
-    }
-
-    /**
-     * Setter for Customer
-     * @param Customer Customer
-     * @return self
-     */
-    public function setCustomer($Customer)
-    {
-        $this->Customer = $Customer;
-        return $this;
-    }
-
-    /**
-     * @var OrderItem[]
-     */
-    protected $OrderItems = [];
-
-    /**
-     * Getter for OrderItems
-     * @return OrderItem[]
-     */
-    public function getOrderItems()
-    {
-        return $this->OrderItems;
-    }
-
-    /**
-     * Append for OrderItems
-     * @param OrderItem OrderItem
-     * @return self
-     */
-    public function addOrderItem($OrderItem)
-    {
-        $this->OrderItems[] = $OrderItem;
-        return $this;
-    }
-
-    /**
-     * Se puede completar ya sea que el envío sea con o sin costo para el comprador.
-     * @var Shipping
-     */
-    protected $Shipping;
-
-    /**
-     * Getter for Shipping
-     * @return Shipping
-     */
-    public function getShipping()
-    {
-        return $this->Shipping;
-    }
-
-    /**
-     * Setter for Shipping
-     * @param Shipping Shipping
-     * @return self
-     */
-    public function setShipping($Shipping)
-    {
-        $this->Shipping = $Shipping;
-        return $this;
-    }
-
-    /**
-     * @var Payment[]
-     */
-    protected $Payments;
-
-    /**
-     * Getter for Payments
-     * @return Payment[]
-     */
-    public function getPayments()
-    {
-        return $this->Payments ?? [];
-    }
-
-    /**
-     * Add Payment
-     * @param Payment Payment
-     * @return self
-     */
-    public function addPayment(Payment $Payment)
-    {
-        $this->_checkValidDate($Payment);
-
-        $this->Payments[] = $Payment;
-        return $this;
-    }
-
-    /**
-     * @var CashPayment
-     */
-    protected $CashPayment;
-
-    /**
-     * Getter for CashPayment
-     * @return CashPayment
-     */
-    public function getCashPayment()
-    {
-        return $this->CashPayment;
-    }
-
-    /**
-     * Setter for CashPayment
-     * @param CashPayment CashPayment
-     * @return self
-     */
-    public function setCashPayment($CashPayment)
-    {
-        $this->CashPayment = $CashPayment;
-        return $this;
+        $data = parent::jsonSerialize();
+        return $data + [
+                'Total' => $this->getTotal(),
+                'PaidTotal' => $this->getPaidTotal(),
+            ];
     }
 
     protected function _checkValidDate(Payment $Payment, \DateTime $fecha = null)
@@ -398,18 +445,7 @@ class Order extends AbstractModel
 
         if ($Payment->getTransactionDate() <= $fecha) {
             $message = 'The date of payment %s is greater than date of order';
-            throw new ModelException(sprintf($message, $Payment->getPaymentsId()));
+            throw new ModelException(sprintf($message, $Payment->getPaymentId()));
         }
-
-        return;
-    }
-
-    public function jsonSerialize()
-    {
-        $data = parent::jsonSerialize();
-        return $data + [
-            'Total' => $this->getTotal(),
-            'PaidTotal' => $this->getPaidTotal(),
-        ];
     }
 }

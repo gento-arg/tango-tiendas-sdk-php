@@ -7,71 +7,54 @@ use TangoTiendas\Exceptions\ModelException;
 class Payment extends AbstractModel
 {
     /**
-     * Identificador del pago. Debe ser distinto para cada operación. Incluso 
+     * Identificador del pago. Debe ser distinto para cada operación. Incluso
      * con PaymentID si se combina con efectivo.
      * @var int
      */
-    protected $PaymentsId;
-
-    /**
-     * Getter for PaymentsId
-     * @return int
-     */
-    public function getPaymentsId()
-    {
-        return $this->PaymentsId;
-    }
-
-    /**
-     * Setter for PaymentsId
-     * @param int PaymentsId
-     * @return self
-     */
-    public function setPaymentsId($PaymentsId)
-    {
-        if ($PaymentsId <= 0) {
-            throw new ModelException('PaymentsId must be greater than 0');
-        }
-
-        if (strlen((string) $PaymentsId) > 50) {
-            throw new ModelException('PaymentsId length must be equals or lower than 50');
-        }
-
-        $this->PaymentsId = $PaymentsId;
-        return $this;
-    }
-
+    protected $PaymentId;
     /**
      * Fecha en que se realizó el pago.
      * @var \DateTime
      */
     protected $TransactionDate;
-
-    /**
-     * Getter for TransactionDate
-     * @return \DateTime
-     */
-    public function getTransactionDate()
-    {
-        return $this->TransactionDate;
-    }
-
-    /**
-     * Setter for TransactionDate
-     * @param \DateTime TransactionDate
-     * @return self
-     */
-    public function setTransactionDate($TransactionDate)
-    {
-        $this->TransactionDate = $TransactionDate;
-        return $this;
-    }
-
     /**
      * Código de autorización del pago de tarjeta.
      * @var string
      */
     protected $AuthorizationCode;
+    /**
+     * @var string
+     */
+    protected $TransactionNumber;
+    /**
+     * Cantidad de cuotas.
+     * @var int
+     */
+    protected $Installments;
+    /**
+     * Importe correspondiente a la cuota.
+     * @var float
+     */
+    protected $InstallmentAmount;
+    /**
+     * Código de la tarjeta de crédito.
+     * @var string
+     */
+    protected $CardCode;
+    /**
+     * @var string
+     */
+    protected $CardPlanCode;
+    /**
+     * Número de cupón de tarjeta de crédito.
+     * @var int
+     */
+    protected $VoucherNo;
+    /**
+     * Código de promoción de la tarjeta de crédito.
+     * @var string
+     */
+    protected $CardPromotionCode;
 
     /**
      * Getter for AuthorizationCode
@@ -84,7 +67,9 @@ class Payment extends AbstractModel
 
     /**
      * Setter for AuthorizationCode
+     *
      * @param string AuthorizationCode
+     *
      * @return self
      */
     public function setAuthorizationCode($AuthorizationCode)
@@ -98,39 +83,114 @@ class Payment extends AbstractModel
     }
 
     /**
-     * @var string
-     */
-    protected $TransactionNumber;
-
-    /**
-     * Getter for TransactionNumber
+     * Getter for CardCode
      * @return string
+     * @codeCoverageIgnore
      */
-    public function getTransactionNumber()
+    public function getCardCode()
     {
-        return $this->TransactionNumber;
+        return $this->CardCode;
     }
 
     /**
-     * Setter for TransactionNumber
-     * @param string TransactionNumber
+     * Setter for CardCode
+     *
+     * @param string CardCode
+     *
      * @return self
+     * @codeCoverageIgnore
      */
-    public function setTransactionNumber($TransactionNumber)
+    public function setCardCode($CardCode)
     {
-        if (strlen((string) $TransactionNumber) > 40) {
-            throw new ModelException('TransactionNumber length must be equals or lower than 40');
+        if (strlen((string) $CardCode) > 3) {
+            throw new ModelException('CardCode length must be equals or lower than 3');
         }
 
-        $this->TransactionNumber = $TransactionNumber;
+        $this->CardCode = $CardCode;
         return $this;
     }
 
     /**
-     * Cantidad de cuotas.
-     * @var int
+     * Getter for CardPlanCode
+     * @return string
+     * @codeCoverageIgnore
      */
-    protected $Installments;
+    public function getCardPlanCode()
+    {
+        return $this->CardPlanCode;
+    }
+
+    /**
+     * Setter for CardPlanCode
+     *
+     * @param string CardPlanCode
+     *
+     * @return self
+     * @codeCoverageIgnore
+     */
+    public function setCardPlanCode($CardPlanCode)
+    {
+        if (strlen((string) $CardPlanCode) > 10) {
+            throw new ModelException('CardPlanCode length must be equals or lower than 10');
+        }
+
+        $this->CardPlanCode = $CardPlanCode;
+        return $this;
+    }
+
+    /**
+     * Getter for CardPromotionCode
+     * @return string
+     * @codeCoverageIgnore
+     */
+    public function getCardPromotionCode()
+    {
+        return $this->CardPromotionCode;
+    }
+
+    /**
+     * Setter for CardPromotionCode
+     *
+     * @param string CardPromotionCode
+     *
+     * @return self
+     * @codeCoverageIgnore
+     */
+    public function setCardPromotionCode($CardPromotionCode)
+    {
+        if (strlen((string) $CardPromotionCode) > 10) {
+            throw new ModelException('CardPromotionCode length must be equals or lower than 10');
+        }
+
+        $this->CardPromotionCode = $CardPromotionCode;
+        return $this;
+    }
+
+    /**
+     * Getter for InstallmentAmount
+     * @return float
+     */
+    public function getInstallmentAmount()
+    {
+        return $this->InstallmentAmount;
+    }
+
+    /**
+     * Setter for InstallmentAmount
+     *
+     * @param float InstallmentAmount
+     *
+     * @return self
+     */
+    public function setInstallmentAmount($InstallmentAmount)
+    {
+        if ($InstallmentAmount <= 0) {
+            throw new ModelException('InstallmentAmount must be greater than 0');
+        }
+
+        $this->InstallmentAmount = $InstallmentAmount;
+        return $this;
+    }
 
     /**
      * Getter for Installments
@@ -143,7 +203,9 @@ class Payment extends AbstractModel
 
     /**
      * Setter for Installments
+     *
      * @param int Installments
+     *
      * @return self
      */
     public function setInstallments($Installments)
@@ -161,163 +223,33 @@ class Payment extends AbstractModel
     }
 
     /**
-     * Importe correspondiente a la cuota.
-     * @var float
-     */
-    protected $InstallmentsAmount;
-
-    /**
-     * Getter for InstallmentsAmount
-     * @return float
-     */
-    public function getInstallmentsAmount()
-    {
-        return $this->InstallmentsAmount;
-    }
-
-    /**
-     * Setter for InstallmentsAmount
-     * @param float InstallmentsAmount
-     * @return self
-     */
-    public function setInstallmentsAmount($InstallmentsAmount)
-    {
-        if ($InstallmentsAmount <= 0) {
-            throw new ModelException('InstallmentsAmount must be greater than 0');
-        }
-
-        $this->InstallmentsAmount = $InstallmentsAmount;
-        return $this;
-    }
-
-    /**
-     * Código de la tarjeta de crédito.
-     * @var string
-     */
-    protected $CardCode;
-
-    /**
-     * Getter for CardCode
-     * @return string
-     * @codeCoverageIgnore
-     */
-    public function getCardCode()
-    {
-        return $this->CardCode;
-    }
-
-    /**
-     * Setter for CardCode
-     * @param string CardCode
-     * @return self
-     * @codeCoverageIgnore
-     */
-    public function setCardCode($CardCode)
-    {
-        if (strlen((string) $CardCode) > 3) {
-            throw new ModelException('CardCode length must be equals or lower than 3');
-        }
-
-        $this->CardCode = $CardCode;
-        return $this;
-    }
-
-    /**
-     * @var string
-     */
-    protected $CardPlanCode;
-
-    /**
-     * Getter for CardPlanCode
-     * @return string
-     * @codeCoverageIgnore
-     */
-    public function getCardPlanCode()
-    {
-        return $this->CardPlanCode;
-    }
-
-    /**
-     * Setter for CardPlanCode
-     * @param string CardPlanCode
-     * @return self
-     * @codeCoverageIgnore
-     */
-    public function setCardPlanCode($CardPlanCode)
-    {
-        if (strlen((string) $CardPlanCode) > 10) {
-            throw new ModelException('CardPlanCode length must be equals or lower than 10');
-        }
-
-        $this->CardPlanCode = $CardPlanCode;
-        return $this;
-    }
-
-    /**
-     * Número de cupón de tarjeta de crédito.
-     * @var int
-     */
-    protected $VoucherNro;
-
-    /**
-     * Getter for VoucherNro
+     * Getter for PaymentsId
      * @return int
-     * @codeCoverageIgnore
      */
-    public function getVoucherNro()
+    public function getPaymentId()
     {
-        return $this->VoucherNro;
+        return $this->PaymentId;
     }
 
     /**
-     * Setter for VoucherNro
-     * @param int VoucherNro
+     * Setter for PaymentId
+     *
+     * @param int PaymentId
+     *
+     * @throws ModelException
      * @return self
-     * @codeCoverageIgnore
      */
-    public function setVoucherNro($VoucherNro)
+    public function setPaymentId($PaymentId)
     {
-        if ($VoucherNro < 0) {
-            throw new ModelException('VoucherNro must be greater than 0');
+        if ($PaymentId <= 0) {
+            throw new ModelException('PaymentsId must be greater than 0');
         }
 
-        if (strlen((string) $VoucherNro) > 10) {
-            throw new ModelException('VoucherNro length must be equals or lower than 10');
+        if (strlen((string) $PaymentId) > 50) {
+            throw new ModelException('PaymentsId length must be equals or lower than 50');
         }
 
-        $this->VoucherNro = $VoucherNro;
-        return $this;
-    }
-
-    /**
-     * Código de promoción de la tarjeta de crédito.
-     * @var string
-     */
-    protected $CardPromotionCode;
-
-    /**
-     * Getter for CardPromotionCode
-     * @return string
-     * @codeCoverageIgnore
-     */
-    public function getCardPromotionCode()
-    {
-        return $this->CardPromotionCode;
-    }
-
-    /**
-     * Setter for CardPromotionCode
-     * @param string CardPromotionCode
-     * @return self
-     * @codeCoverageIgnore
-     */
-    public function setCardPromotionCode($CardPromotionCode)
-    {
-        if (strlen((string) $CardPromotionCode) > 10) {
-            throw new ModelException('CardPromotionCode length must be equals or lower than 10');
-        }
-
-        $this->CardPromotionCode = $CardPromotionCode;
+        $this->PaymentId = $PaymentId;
         return $this;
     }
 
@@ -326,15 +258,95 @@ class Payment extends AbstractModel
      */
     public function getTotal()
     {
-        return $this->getInstallments() * $this->getInstallmentsAmount();
+        return $this->getInstallments() * $this->getInstallmentAmount();
     }
 
+    /**
+     * Getter for TransactionDate
+     * @return \DateTime
+     */
+    public function getTransactionDate()
+    {
+        return $this->TransactionDate;
+    }
+
+    /**
+     * Setter for TransactionDate
+     *
+     * @param \DateTime TransactionDate
+     *
+     * @return self
+     */
+    public function setTransactionDate($TransactionDate)
+    {
+        $this->TransactionDate = $TransactionDate;
+        return $this;
+    }
+
+    /**
+     * Getter for TransactionNumber
+     * @return string
+     */
+    public function getTransactionNumber()
+    {
+        return $this->TransactionNumber;
+    }
+
+    /**
+     * Setter for TransactionNumber
+     *
+     * @param string TransactionNumber
+     *
+     * @throws ModelException
+     * @return self
+     */
+    public function setTransactionNumber($TransactionNumber)
+    {
+        if (strlen((string) $TransactionNumber) > 40) {
+            throw new ModelException('TransactionNumber length must be equals or lower than 40');
+        }
+
+        $this->TransactionNumber = $TransactionNumber;
+        return $this;
+    }
+
+    /**
+     * Getter for VoucherNo
+     * @return int
+     * @codeCoverageIgnore
+     */
+    public function getVoucherNo()
+    {
+        return $this->VoucherNo;
+    }
+
+    /**
+     * Setter for VoucherNo
+     *
+     * @param int VoucherNo
+     *
+     * @return self
+     * @codeCoverageIgnore
+     */
+    public function setVoucherNo($VoucherNo)
+    {
+        if ($VoucherNo < 0) {
+            throw new ModelException('VoucherNo must be greater than 0');
+        }
+
+        if (strlen((string) $VoucherNo) > 8) {
+            throw new ModelException('VoucherNo length must be equals or lower than 8');
+        }
+
+        $this->VoucherNo = $VoucherNo;
+        return $this;
+    }
 
     public function jsonSerialize()
     {
         $data = parent::jsonSerialize();
         return $data + [
-            'Total' => $this->getTotal(),
-        ];
+                'Total' => $this->getTotal(),
+            ];
     }
 }

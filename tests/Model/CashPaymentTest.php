@@ -31,12 +31,4 @@ class CashPaymentTest extends \PHPUnit\Framework\TestCase
 
         $item->setPaymentID(str_repeat('9', 51));
     }
-
-    public function testPaymentTotalInvalid()
-    {
-        $item = new CashPayment();
-        $this->expectException(ModelException::class);
-
-        $item->setPaymentTotal(0);
-    }
 }

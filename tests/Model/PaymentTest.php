@@ -8,13 +8,13 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
     public function testPaymentId()
     {
         $payment = new Payment();
-        $payment->setPaymentsId(1);
+        $payment->setPaymentId(1);
 
-        $this->assertEquals(1, $payment->getPaymentsId());
+        $this->assertEquals(1, $payment->getPaymentId());
 
         $expected = str_repeat('9', 50);
-        $payment->setPaymentsId($expected);
-        $this->assertEquals($expected, $payment->getPaymentsId());
+        $payment->setPaymentId($expected);
+        $this->assertEquals($expected, $payment->getPaymentId());
     }
 
     public function testPaymentIdInvalidMin()
@@ -22,7 +22,7 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
         $payment = new Payment();
         $this->expectException(ModelException::class);
 
-        $payment->setPaymentsId(0);
+        $payment->setPaymentId(0);
     }
 
     public function testPaymentIdInvalidMax()
@@ -30,7 +30,7 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
         $payment = new Payment();
         $this->expectException(ModelException::class);
 
-        $payment->setPaymentsId(str_repeat('9', 51));
+        $payment->setPaymentId(str_repeat('9', 51));
     }
 
     public function testPayment()
@@ -38,7 +38,7 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
         $payment = new Payment();
 
         $payment->setInstallments(2)
-            ->setInstallmentsAmount(100);
+            ->setInstallmentAmount(100);
 
         $this->assertEquals(200, $payment->getTotal());
     }
@@ -48,7 +48,7 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
         $payment = new Payment();
         $this->expectException(ModelException::class);
 
-        $payment->setInstallmentsAmount(-1100);
+        $payment->setInstallmentAmount(-1100);
     }
 
     public function testPaymentInvalidInstallments()
@@ -112,10 +112,10 @@ class PaymentTest extends \PHPUnit\Framework\TestCase
     {
         $payment = new Payment();
         $payment->setInstallments(2);
-        $payment->setInstallmentsAmount(400);
+        $payment->setInstallmentAmount(400);
         $this->assertEquals([
             'Installments' => 2,
-            'InstallmentsAmount' => 400,
+            'InstallmentAmount' => 400,
             'Total' => 800,
         ], $payment->jsonSerialize());
     }

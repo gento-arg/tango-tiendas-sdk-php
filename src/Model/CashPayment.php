@@ -7,11 +7,21 @@ use TangoTiendas\Exceptions\ModelException;
 class CashPayment extends AbstractModel
 {
     /**
-     * Identificador del pago. Debe ser distinto para cada operación. Incluso 
+     * Identificador del pago. Debe ser distinto para cada operación. Incluso
      * con PaymentsID si se combina con tarjetas.
      * @var int
      */
     protected $PaymentID;
+    /**
+     * Código de Forma de Pago.
+     * @var string
+     */
+    protected $PaymentMethod;
+    /**
+     * Total, del pago.
+     * @var float
+     */
+    protected $PaymentTotal;
 
     /**
      * Getter for PaymentID
@@ -24,7 +34,10 @@ class CashPayment extends AbstractModel
 
     /**
      * Setter for PaymentID
+     *
      * @param int PaymentID
+     *
+     * @throws ModelException
      * @return self
      */
     public function setPaymentID($PaymentID)
@@ -42,12 +55,6 @@ class CashPayment extends AbstractModel
     }
 
     /**
-     * Código de Forma de Pago.
-     * @var string
-     */
-    protected $PaymentMethod;
-
-    /**
      * Getter for PaymentMethod
      * @return string
      * @codeCoverageIgnore
@@ -59,7 +66,9 @@ class CashPayment extends AbstractModel
 
     /**
      * Setter for PaymentMethod
+     *
      * @param string PaymentMethod
+     *
      * @return self
      * @codeCoverageIgnore
      */
@@ -68,12 +77,6 @@ class CashPayment extends AbstractModel
         $this->PaymentMethod = $PaymentMethod;
         return $this;
     }
-
-    /**
-     * Total, del pago.
-     * @var float
-     */
-    protected $PaymentTotal;
 
     /**
      * Getter for PaymentTotal
@@ -86,15 +89,14 @@ class CashPayment extends AbstractModel
 
     /**
      * Setter for PaymentTotal
+     *
      * @param float PaymentTotal
+     *
+     * @throws ModelException
      * @return self
      */
     public function setPaymentTotal($PaymentTotal)
     {
-        if ($PaymentTotal <= 0) {
-            throw new ModelException('PaymentTotal must be greater than 0');
-        }
-
         $this->PaymentTotal = $PaymentTotal;
         return $this;
     }
