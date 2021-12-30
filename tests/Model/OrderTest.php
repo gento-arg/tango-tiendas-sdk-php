@@ -233,11 +233,13 @@ class OrderTest extends TestCase
 
         $orderItem = new OrderItem();
         $orderItem->setQuantity(1);
+        $orderItem->setProductCode('product1');
         $orderItem->setUnitPrice(200);
         $dataModel->addOrderItem($orderItem);
 
         $orderItem = new OrderItem();
         $orderItem->setQuantity(3);
+        $orderItem->setProductCode('product2');
         $orderItem->setUnitPrice(100);
         $dataModel->addOrderItem($orderItem);
 
