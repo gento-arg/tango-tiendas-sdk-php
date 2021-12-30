@@ -84,7 +84,14 @@ class Order extends AbstractModel
      */
     public function addOrderItem($OrderItem)
     {
-        $this->OrderItems[] = $OrderItem;
+        $existing = $this->getOrderItem($OrderItem->getProductCode());
+        if ($existing) {
+            $existing->setQuantity($existing->getQuantity() + $OrderItem->getQuantity());
+        }
+
+        if (!$existing) {
+            $this->OrderItems[] = $OrderItem;
+        }
         return $this;
     }
 
@@ -216,6 +223,21 @@ class Order extends AbstractModel
 
         $this->OrderID = $OrderID;
         return $this;
+    }
+
+    /**
+     * @param $productCode
+     *
+     * @return OrderItem|null
+     */
+    public function getOrderItem($productCode)
+    {
+        foreach ($this->getOrderItems() as $orderItem) {
+            if ($orderItem->getProductCode() === $productCode) {
+                return $orderItem;
+            }
+        }
+        return null;
     }
 
     /**
