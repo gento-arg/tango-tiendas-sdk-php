@@ -1,11 +1,12 @@
 language: php
 php:
-  - 7.2
+  - 7.4
+  - 8.0
 env:
   matrix:
     - TEST_SUITE=static
     - TEST_SUITE=unit
-before_script: 
+before_script:
   - composer install
 script:
   - mkdir -p build/logs
