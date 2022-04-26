@@ -6,6 +6,8 @@ env:
   matrix:
     - TEST_SUITE=static
     - TEST_SUITE=unit
+  global:
+    - XDEBUG_MODE=coverage
 before_script:
   - composer install
 script:
