@@ -25,7 +25,9 @@ class OrderItem extends AbstractModel
 
     /**
      * Setter for ProductCode
+     *
      * @param string ProductCode
+     *
      * @return self
      * @codeCoverageIgnore
      */
@@ -36,7 +38,7 @@ class OrderItem extends AbstractModel
     }
 
     /**
-     * Código del artículo de Tango Gestión (se refiere al que se guarda en el 
+     * Código del artículo de Tango Gestión (se refiere al que se guarda en el
      * campo STA11.Cod_Sta11 de las tablas de Tango Gestión)
      * @var string
      */
@@ -53,7 +55,9 @@ class OrderItem extends AbstractModel
 
     /**
      * Setter for SKUCode
+     *
      * @param string SKUCode
+     *
      * @return self
      */
     public function setSKUCode($SKUCode)
@@ -84,7 +88,9 @@ class OrderItem extends AbstractModel
 
     /**
      * Setter for VariantCode
+     *
      * @param string VariantCode
+     *
      * @return self
      * @codeCoverageIgnore
      */
@@ -116,7 +122,9 @@ class OrderItem extends AbstractModel
 
     /**
      * Setter for Description
+     *
      * @param string Description
+     *
      * @return self
      * @codeCoverageIgnore
      */
@@ -148,7 +156,9 @@ class OrderItem extends AbstractModel
 
     /**
      * Setter for VariantDescription
+     *
      * @param string VariantDescription
+     *
      * @return self
      * @codeCoverageIgnore
      */
@@ -179,7 +189,9 @@ class OrderItem extends AbstractModel
 
     /**
      * Setter for Quantity
+     *
      * @param float Quantity
+     *
      * @return self
      */
     public function setQuantity($Quantity)
@@ -209,7 +221,9 @@ class OrderItem extends AbstractModel
 
     /**
      * Setter for UnitPrice
+     *
      * @param float UnitPrice
+     *
      * @return self
      */
     public function setUnitPrice($UnitPrice)
@@ -239,7 +253,9 @@ class OrderItem extends AbstractModel
 
     /**
      * Setter for DiscountPercentage
+     *
      * @param float DiscountPercentage
+     *
      * @return self
      */
     public function setDiscountPercentage($DiscountPercentage)
@@ -259,6 +275,9 @@ class OrderItem extends AbstractModel
 
     public function getDiscount()
     {
-        return $this->getSubtotal() * $this->getDiscountPercentage();
+        if ($this->getDiscountPercentage() <= 0) {
+            return 0;
+        }
+        return $this->getSubtotal() * ($this->getDiscountPercentage() / 100);
     }
 }

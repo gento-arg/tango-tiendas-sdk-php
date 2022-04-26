@@ -58,30 +58,29 @@ class OrderItemTest extends \PHPUnit\Framework\TestCase
     public function testDiscountPercentage()
     {
         $item = new OrderItem();
-        $item->setDiscountPercentage(1);
+        $item->setDiscountPercentage(0);
+        $this->assertEquals(0, $item->getDiscountPercentage());
 
-        $this->assertEquals(1, $item->getDiscountPercentage());
-
-        // Precio   100
+        // Precio   124
         // Qty      0
         // %        100%
-        $item->setUnitPrice(100);
+        $item->setUnitPrice(124);
         $this->assertEquals(0, $item->getSubtotal());
         $this->assertEquals(0, $item->getDiscount());
 
-        // Precio   100
+        // Precio   124
         // Qty      1
         // %        100%
         $item->setQuantity(1);
-        $this->assertEquals(100, $item->getSubtotal());
-        $this->assertEquals(100, $item->getDiscount());
+        $this->assertEquals(124, $item->getSubtotal());
+        $this->assertEquals(0, $item->getDiscount());
 
-        // Precio   100
+        // Precio   124
         // Qty      1
         // %        50%
-        $item->setDiscountPercentage(.5);
-        $this->assertEquals(100, $item->getSubtotal());
-        $this->assertEquals(50, $item->getDiscount());
+        $item->setDiscountPercentage(50);
+        $this->assertEquals(124, $item->getSubtotal());
+        $this->assertEquals(62, $item->getDiscount());
     }
 
     public function testDiscountPercentageInvalid()
