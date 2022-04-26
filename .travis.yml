@@ -6,9 +6,6 @@ env:
   matrix:
     - TEST_SUITE=static
     - TEST_SUITE=unit
-    include:
-      - php: 8.0
-        env: XDEBUG_MODE=none
   global:
     - XDEBUG_MODE=coverage
 before_script:
@@ -19,4 +16,4 @@ script:
   - if [ $TEST_SUITE == "static" ]; then vendor/bin/phpmd src text cleancode,design,naming,unusedcode; fi
   - if [ $TEST_SUITE == "unit" ]; then vendor/bin/phpunit; fi
   - if [ $TEST_SUITE == "unit" ]; then wget https://gist.githubusercontent.com/manuelcanepa/27fc542807b1e3cb4cdefa6bda2d4b34/raw/6824c6332c023f5f729a8958a1df9f5150568cf4/coverage-checker.php; fi
-  - if [ $TEST_SUITE == "unit" && $XDEBUG_MODE == "coverage" ]; then php coverage-checker.php build/logs/clover.xml 80; fi
+  - if [ $TEST_SUITE == "unit" && ${TRAVIS_PHP_VERSION:0:3} != "8.0" ]; then php coverage-checker.php build/logs/clover.xml 80; fi
