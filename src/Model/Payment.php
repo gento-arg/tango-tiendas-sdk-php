@@ -55,6 +55,11 @@ class Payment extends AbstractModel
      * @var string
      */
     protected $CardPromotionCode;
+    /**
+     * Total, del pago.
+     * @var float
+     */
+    protected $PaymentTotal = null;
 
     /**
      * Getter for AuthorizationCode
@@ -258,6 +263,9 @@ class Payment extends AbstractModel
      */
     public function getTotal()
     {
+        if ($this->PaymentTotal !== null) {
+            return $this->PaymentTotal;
+        }
         return $this->getInstallments() * $this->getInstallmentAmount();
     }
 
@@ -348,5 +356,18 @@ class Payment extends AbstractModel
         return $data + [
                 'Total' => $this->getTotal(),
             ];
+    }
+
+    /**
+     * Setter for PaymentTotal
+     *
+     * @param float $PaymentTotal
+     *
+     * @return self
+     */
+    public function setPaymentTotal($PaymentTotal)
+    {
+        $this->PaymentTotal = $PaymentTotal;
+        return $this;
     }
 }
