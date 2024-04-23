@@ -7,7 +7,10 @@ namespace TangoTiendas\Model;
  */
 abstract class AbstractModel implements \JsonSerializable
 {
-    public function jsonSerialize()
+    /**
+     * @inheritdoc
+     */
+    public function jsonSerialize(): mixed
     {
         $objVars = get_object_vars($this);
         $return = [];
@@ -23,6 +26,17 @@ abstract class AbstractModel implements \JsonSerializable
         }
 
         return $return;
+    }
+
+    public function loadData($data)
+    {
+        array_walk($data, function ($value, $ind) {
+            $method = 'set' . $ind;
+            if (method_exists($this, $method)) {
+                call_user_func([$this, $method], $value);
+            }
+        });
+        return $this;
     }
 
     protected function _extractData($value, $ind, &$data)
@@ -42,16 +56,5 @@ abstract class AbstractModel implements \JsonSerializable
         }
 
         $data[$ind] = $value;
-    }
-
-    public function loadData($data)
-    {
-        array_walk($data, function ($value, $ind) {
-            $method = 'set' . $ind;
-            if (method_exists($this, $method)) {
-                call_user_func([$this, $method], $value);
-            }
-        });
-        return $this;
     }
 }

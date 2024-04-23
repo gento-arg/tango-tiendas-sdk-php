@@ -442,7 +442,10 @@ class Order extends AbstractModel
         return $this;
     }
 
-    public function jsonSerialize()
+    /**
+     * @inheritdoc
+     */
+    public function jsonSerialize(): mixed
     {
         $data = parent::jsonSerialize();
         return $data + [
