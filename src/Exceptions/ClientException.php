@@ -19,7 +19,7 @@ class ClientException extends \Exception
 
     /**
      * @param $response
-     * @return ConnectorException
+     * @return self
      */
     public function setResponse($response): self
     {

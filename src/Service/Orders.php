@@ -19,7 +19,7 @@ class Orders extends Client
             $status = new Status();
             $status->loadData($data);
 
-            if ($status->isOk() == false) {
+            if (!$status->isOk()) {
                 throw new ClientException($status->getMessage());
             }
 

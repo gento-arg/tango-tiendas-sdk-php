@@ -350,7 +350,7 @@ class Payment extends AbstractModel
         return $this;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         $data = parent::jsonSerialize();
         return $data + [

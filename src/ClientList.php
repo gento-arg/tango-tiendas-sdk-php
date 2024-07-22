@@ -2,6 +2,7 @@
 
 namespace TangoTiendas;
 
+use TangoTiendas\Exceptions\ClientException;
 use TangoTiendas\Model\PagingResult;
 
 abstract class ClientList extends Client
@@ -11,7 +12,8 @@ abstract class ClientList extends Client
     protected $_dataClass;
 
     /**
-     * @return Paging
+     * @throws ClientException
+     * @return PagingResult
      */
     public function getList($pageSize = 500, $pageNumber = 1, $filter = null, $extra = null)
     {
