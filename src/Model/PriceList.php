@@ -10,31 +10,34 @@ class PriceList extends AbstractModel
      * @var int
      */
     protected $PriceListNumber;
-
-    /**
-     * Getter for PriceListNumber
-     * @return int
-     */
-    public function getPriceListNumber()
-    {
-        return $this->PriceListNumber;
-    }
-
-    /**
-     * Setter for PriceListNumber
-     * @param int PriceListNumber
-     * @return self
-     */
-    public function setPriceListNumber($PriceListNumber)
-    {
-        $this->PriceListNumber = $PriceListNumber;
-        return $this;
-    }
-
     /**
      * @var string
      */
     protected $Description;
+    /**
+     * @var bool
+     */
+    protected $CommonCurrency;
+    /**
+     * @var bool
+     */
+    protected $IvaIncluded;
+    /**
+     * @var bool
+     */
+    protected $InternalTaxIncluded;
+    /**
+     * @var DateTime|null
+     */
+    protected $ValidityDateSince;
+    /**
+     * @var DateTime|null
+     */
+    protected $ValidityDateUntil;
+    /**
+     * @var bool
+     */
+    protected $Disabled;
 
     /**
      * Getter for Description
@@ -57,40 +60,29 @@ class PriceList extends AbstractModel
     }
 
     /**
-     * @var bool
-     */
-    protected $CommonCurrency;
-
-    /**
-     * Getter for CommonCurrency
      * @return bool
      */
-    public function hasCommonCurrency()
+    public function getInternalTaxIncluded()
     {
-        return $this->CommonCurrency;
+        return $this->InternalTaxIncluded;
     }
 
     /**
-     * Setter for CommonCurrency
-     * @param bool CommonCurrency
+     * Setter for InternalTaxIncluded
+     *
+     * @param bool $InternalTaxIncluded
      * @return self
      */
-    public function setCommonCurrency($CommonCurrency)
+    public function setInternalTaxIncluded($InternalTaxIncluded)
     {
-        $this->CommonCurrency = $CommonCurrency;
+        $this->InternalTaxIncluded = $InternalTaxIncluded;
         return $this;
     }
 
     /**
-     * @var bool
-     */
-    protected $IvaIncluded;
-
-    /**
-     * Getter for IvaIncluded
      * @return bool
      */
-    public function hasIvaIncluded()
+    public function getIvaIncluded()
     {
         return $this->IvaIncluded;
     }
@@ -107,34 +99,24 @@ class PriceList extends AbstractModel
     }
 
     /**
-     * @var bool
+     * Getter for PriceListNumber
+     * @return int
      */
-    protected $InternalTaxIncluded;
-
-    /**
-     * Getter for InternalTaxIncluded
-     * @return bool
-     */
-    public function hasInternalTaxIncluded()
+    public function getPriceListNumber()
     {
-        return $this->InternalTaxIncluded;
+        return $this->PriceListNumber;
     }
 
     /**
-     * Setter for InternalTaxIncluded
-     * @param bool InternalTaxIncluded
+     * Setter for PriceListNumber
+     * @param int PriceListNumber
      * @return self
      */
-    public function setInternalTaxIncluded($InternalTaxIncluded)
+    public function setPriceListNumber($PriceListNumber)
     {
-        $this->InternalTaxIncluded = $InternalTaxIncluded;
+        $this->PriceListNumber = $PriceListNumber;
         return $this;
     }
-
-    /**
-     * @var DateTime|null
-     */
-    protected $ValidityDateSince;
 
     /**
      * Getter for ValidityDateSince
@@ -161,11 +143,6 @@ class PriceList extends AbstractModel
     }
 
     /**
-     * @var DateTime|null
-     */
-    protected $ValidityDateUntil;
-
-    /**
      * Getter for ValidityDateUntil
      * @return DateTime|null
      */
@@ -190,9 +167,31 @@ class PriceList extends AbstractModel
     }
 
     /**
-     * @var bool
+     * Getter for CommonCurrency
+     * @return bool
      */
-    protected $Disabled;
+    public function hasCommonCurrency()
+    {
+        return $this->CommonCurrency;
+    }
+
+    /**
+     * Getter for InternalTaxIncluded
+     * @return bool
+     */
+    public function hasInternalTaxIncluded()
+    {
+        return $this->InternalTaxIncluded;
+    }
+
+    /**
+     * Getter for IvaIncluded
+     * @return bool
+     */
+    public function hasIvaIncluded()
+    {
+        return $this->IvaIncluded;
+    }
 
     /**
      * Getter for Disabled
@@ -211,6 +210,17 @@ class PriceList extends AbstractModel
     public function setDisabled($Disabled)
     {
         $this->Disabled = $Disabled;
+        return $this;
+    }
+
+    /**
+     * Setter for CommonCurrency
+     * @param bool CommonCurrency
+     * @return self
+     */
+    public function setCommonCurrency($CommonCurrency)
+    {
+        $this->CommonCurrency = $CommonCurrency;
         return $this;
     }
 }
