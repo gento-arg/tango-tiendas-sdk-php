@@ -63,6 +63,24 @@ class Order extends AbstractModel
      * @var bool
      */
     protected $AgreedWithSeller;
+    /**
+     * Número de lista de precios.
+     *
+     * @var int
+     */
+    protected $PriceListNumber;
+    /**
+     * Indica que los importes informados incluyen IVA
+     *
+     * @var bool
+     */
+    protected $IvaIncluded;
+    /**
+     * Indica que los importes informados incluyen impuestos internos
+     *
+     * @var bool
+     */
+    protected $InternalTaxIncluded;
 
     /**
      * @param $CashPayment
@@ -96,6 +114,30 @@ class Order extends AbstractModel
     }
 
     /**
+     * @param $productCode
+     *
+     * @return OrderItem|null
+     */
+    public function getOrderItem($productCode)
+    {
+        foreach ($this->getOrderItems() as $orderItem) {
+            if ($orderItem->getProductCode() === $productCode) {
+                return $orderItem;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Getter for OrderItems
+     * @return OrderItem[]
+     */
+    public function getOrderItems()
+    {
+        return $this->OrderItems;
+    }
+
+    /**
      * Add Payment
      *
      * @param Payment Payment
@@ -110,35 +152,24 @@ class Order extends AbstractModel
         return $this;
     }
 
-    /**
-     * Getter for CashPayment
-     * @return CashPayment[]
-     */
-    public function getCashPayments()
+    protected function _checkValidDate(Payment $Payment, \DateTime $fecha = null)
     {
-        return $this->CashPayments ?? [];
-    }
+        if ($fecha === null) {
+            $fecha = $this->getDate();
+        }
 
-    /**
-     * Getter for Customer
-     * @return Customer
-     */
-    public function getCustomer()
-    {
-        return $this->Customer;
-    }
+        if ($fecha === null) {
+            return;
+        }
 
-    /**
-     * Setter for Customer
-     *
-     * @param Customer Customer
-     *
-     * @return self
-     */
-    public function setCustomer($Customer)
-    {
-        $this->Customer = $Customer;
-        return $this;
+        if ($Payment->getTransactionDate() == null) {
+            return;
+        }
+
+        if ($Payment->getTransactionDate() <= $fecha) {
+            $message = 'The date of payment %s is greater than date of order';
+            throw new ModelException(sprintf($message, $Payment->getPaymentId()));
+        }
     }
 
     /**
@@ -170,28 +201,33 @@ class Order extends AbstractModel
     }
 
     /**
-     * Getter for FinancialSurcharge
-     * @return float
+     * Getter for Payments
+     * @return Payment[]
      */
-    public function getFinancialSurcharge()
+    public function getPayments()
     {
-        return $this->FinancialSurcharge;
+        return $this->Payments ?? [];
     }
 
     /**
-     * Setter for FinancialSurcharge
+     * Getter for Customer
+     * @return Customer
+     */
+    public function getCustomer()
+    {
+        return $this->Customer;
+    }
+
+    /**
+     * Setter for Customer
      *
-     * @param float $FinancialSurcharge
+     * @param Customer Customer
      *
      * @return self
      */
-    public function setFinancialSurcharge($FinancialSurcharge)
+    public function setCustomer($Customer)
     {
-        if ((float) $FinancialSurcharge < 0) {
-            throw new ModelException('FinancialSurcharge must be equals or greater than 0');
-        }
-
-        $this->FinancialSurcharge = $FinancialSurcharge;
+        $this->Customer = $Customer;
         return $this;
     }
 
@@ -226,30 +262,6 @@ class Order extends AbstractModel
     }
 
     /**
-     * @param $productCode
-     *
-     * @return OrderItem|null
-     */
-    public function getOrderItem($productCode)
-    {
-        foreach ($this->getOrderItems() as $orderItem) {
-            if ($orderItem->getProductCode() === $productCode) {
-                return $orderItem;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Getter for OrderItems
-     * @return OrderItem[]
-     */
-    public function getOrderItems()
-    {
-        return $this->OrderItems;
-    }
-
-    /**
      * Getter for OrderNumber
      * @return string
      */
@@ -279,57 +291,11 @@ class Order extends AbstractModel
         return $this;
     }
 
-    /**
-     * Getter for PaidTotal
-     * @return float
-     */
-    public function getPaidTotal()
+    public function getTotalWithDiscount()
     {
-        /**
-         * >=0 ∑(Payments.Installments * Payments.InstallmentsAmount)
-         *     + CashPayment.PaymentTotal
-         */
-
-        $total = 0;
-        foreach ($this->getPayments() as $item) {
-            $total += ($item->getTotal());
-        }
-        foreach ($this->getCashPayments() as $item) {
-            $total += ($item->getPaymentTotal());
-        }
-
+        $total = $this->getTotal();
+        $total -= $this->getTotalDiscount();
         return $total;
-    }
-
-    /**
-     * Getter for Payments
-     * @return Payment[]
-     */
-    public function getPayments()
-    {
-        return $this->Payments ?? [];
-    }
-
-    /**
-     * Getter for Shipping
-     * @return Shipping
-     */
-    public function getShipping()
-    {
-        return $this->Shipping;
-    }
-
-    /**
-     * Setter for Shipping
-     *
-     * @param Shipping Shipping
-     *
-     * @return self
-     */
-    public function setShipping($Shipping)
-    {
-        $this->Shipping = $Shipping;
-        return $this;
     }
 
     /**
@@ -362,6 +328,54 @@ class Order extends AbstractModel
     }
 
     /**
+     * Getter for Shipping
+     * @return Shipping
+     */
+    public function getShipping()
+    {
+        return $this->Shipping;
+    }
+
+    /**
+     * Setter for Shipping
+     *
+     * @param Shipping Shipping
+     *
+     * @return self
+     */
+    public function setShipping($Shipping)
+    {
+        $this->Shipping = $Shipping;
+        return $this;
+    }
+
+    /**
+     * Getter for FinancialSurcharge
+     * @return float
+     */
+    public function getFinancialSurcharge()
+    {
+        return $this->FinancialSurcharge;
+    }
+
+    /**
+     * Setter for FinancialSurcharge
+     *
+     * @param float $FinancialSurcharge
+     *
+     * @return self
+     */
+    public function setFinancialSurcharge($FinancialSurcharge)
+    {
+        if ((float)$FinancialSurcharge < 0) {
+            throw new ModelException('FinancialSurcharge must be equals or greater than 0');
+        }
+
+        $this->FinancialSurcharge = $FinancialSurcharge;
+        return $this;
+    }
+
+    /**
      * Getter for TotalDiscount
      * @return float
      */
@@ -385,13 +399,6 @@ class Order extends AbstractModel
 
         $this->TotalDiscount = $TotalDiscount;
         return $this;
-    }
-
-    public function getTotalWithDiscount()
-    {
-        $total = $this->getTotal();
-        $total -= $this->getTotalDiscount();
-        return $total;
     }
 
     /**
@@ -454,23 +461,60 @@ class Order extends AbstractModel
             ];
     }
 
-    protected function _checkValidDate(Payment $Payment, \DateTime $fecha = null)
+    /**
+     * Getter for PaidTotal
+     * @return float
+     */
+    public function getPaidTotal()
     {
-        if ($fecha === null) {
-            $fecha = $this->getDate();
+        /**
+         * >=0 ∑(Payments.Installments * Payments.InstallmentsAmount)
+         *     + CashPayment.PaymentTotal
+         */
+
+        $total = 0;
+        foreach ($this->getPayments() as $item) {
+            $total += ($item->getTotal());
+        }
+        foreach ($this->getCashPayments() as $item) {
+            $total += ($item->getPaymentTotal());
         }
 
-        if ($fecha === null) {
-            return;
-        }
+        return $total;
+    }
 
-        if ($Payment->getTransactionDate() == null) {
-            return;
-        }
+    /**
+     * Getter for CashPayment
+     * @return CashPayment[]
+     */
+    public function getCashPayments()
+    {
+        return $this->CashPayments ?? [];
+    }
 
-        if ($Payment->getTransactionDate() <= $fecha) {
-            $message = 'The date of payment %s is greater than date of order';
-            throw new ModelException(sprintf($message, $Payment->getPaymentId()));
-        }
+    /**
+     * @param bool $priceListInternalTaxIncluded
+     * @return $this
+     */
+    public function setInternalTaxIncluded($priceListInternalTaxIncluded)
+    {
+        $this->InternalTaxIncluded = $priceListInternalTaxIncluded;
+        return $this;
+    }
+
+    public function setIvaIncluded($priceListIvaIncluded)
+    {
+        $this->IvaIncluded = $priceListIvaIncluded;
+        return $this;
+    }
+
+    /**
+     * @param $priceListNumber
+     * @return Order
+     */
+    public function setPriceListNumber($priceListNumber)
+    {
+        $this->PriceListNumber = $priceListNumber;
+        return $this;
     }
 }
