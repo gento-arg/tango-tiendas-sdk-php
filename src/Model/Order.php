@@ -152,7 +152,7 @@ class Order extends AbstractModel
         return $this;
     }
 
-    protected function _checkValidDate(Payment $Payment, \DateTime $fecha = null)
+    protected function _checkValidDate(Payment $Payment, ?\DateTime $fecha = null)
     {
         if ($fecha === null) {
             $fecha = $this->getDate();

@@ -3,6 +3,7 @@
 namespace TangoTiendas\Service;
 
 use TangoTiendas\ClientList;
+use TangoTiendas\Exceptions\ClientException;
 use TangoTiendas\Model\PriceCustomer;
 
 class PriceCustomers extends ClientList
@@ -16,6 +17,7 @@ class PriceCustomers extends ClientList
      * @param int $pageNumber
      * @param string|null $customerCode Customer code to filter
      * @param string|null $listNumber List number to filter
+     * @throws ClientException
      */
     public function getList($pageSize = 500, $pageNumber = 1, $customerCode = null, $listNumber = null)
     {
